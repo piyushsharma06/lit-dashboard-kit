@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lit Dashboard Kit</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent: #6366f1;
+      --sidebar-bg: #1e1b4b;
+      --card-bg: #ffffff;
+      --border-color: #e5e7eb;
+      --text-primary: #111827;
+      --text-muted: #6b7280;
+      --table-head-bg: #f9fafb;
+      --row-hover: #f5f5ff;
+      --icon-bg: #ede9fe;
+    }
+    body { display: flex; height: 100vh; overflow: hidden; background: #f3f4f6; font-family: 'Inter', 'Segoe UI', sans-serif; }
+    sidebar-nav { flex-shrink: 0; }
+    .main { flex: 1; overflow-y: auto; padding: 32px; }
+    .page-title { font-size: 22px; font-weight: 700; color: #1e1b4b; margin-bottom: 4px; }
+    .page-sub { font-size: 14px; color: #6b7280; margin-bottom: 28px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .section-title { font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 14px; }
+  </style>
+</head>
+<body>
+  <sidebar-nav id="sidebar" brand="LitKit"></sidebar-nav>
+
+  <div class="main">
+    <div class="page-title">Analytics Dashboard</div>
+    <div class="page-sub">Welcome back, Piyush — here's what's happening today.</div>
+
+    <div class="stats-grid">
+      <stat-card label="Total Users" value="24,521" trend="up"   delta="+12% this week" icon="👥"></stat-card>
+      <stat-card label="Revenue"     value="₹8.4L"  trend="up"   delta="+8.3% vs last month" icon="💰"></stat-card>
+      <stat-card label="Bounce Rate" value="34.2%"  trend="down" delta="-2.1% improvement" icon="📉"></stat-card>
+      <stat-card label="Active Now"  value="1,204"  trend="neutral" delta="Live count" icon="🟢"></stat-card>
+    </div>
+
+    <div class="section-title">Recent Orders</div>
+    <data-table id="table"></data-table>
+  </div>
+
+  <script type="module">
+    import './src/components/stat-card.js';
+    import './src/components/data-table.js';
+    import './src/components/sidebar-nav.js';
+
+    // Sidebar items
+    document.getElementById('sidebar').items = [
+      { icon: '🏠', label: 'Dashboard', href: '#', active: true },
+      { icon: '📊', label: 'Analytics',  href: '#' },
+      { icon: '👥', label: 'Users',      href: '#', badge: '5' },
+      { icon: '🛒', label: 'Orders',     href: '#' },
+      { icon: '⚙️', label: 'Settings',   href: '#' },
+    ];
+
+    // Table data
+    const table = document.getElementById('table');
+    table.columns = [
+      { key: 'id',     label: 'Order ID',  sortable: true },
+      { key: 'name',   label: 'Customer',  sortable: true },
+      { key: 'amount', label: 'Amount',    sortable: true },
+      { key: 'status', label: 'Status',    badge: { Active: 'success', Pending: 'warning', Cancelled: 'danger' } },
+      { key: 'date',   label: 'Date',      sortable: true },
+    ];
+    table.rows = [
+      { id: '#1041', name: 'Rohit Verma',   amount: '₹2,400', status: 'Active',    date: '2025-06-01' },
+      { id: '#1040', name: 'Sneha Gupta',   amount: '₹890',   status: 'Pending',   date: '2025-05-31' },
+      { id: '#1039', name: 'Arjun Singh',   amount: '₹5,100', status: 'Active',    date: '2025-05-30' },
+      { id: '#1038', name: 'Priya Sharma',  amount: '₹320',   status: 'Cancelled', date: '2025-05-29' },
+      { id: '#1037', name: 'Vikram Nair',   amount: '₹1,750', status: 'Active',    date: '2025-05-28' },
+      { id: '#1036', name: 'Ananya Joshi',  amount: '₹670',   status: 'Pending',   date: '2025-05-27' },
+      { id: '#1035', name: 'Karan Mehta',   amount: '₹3,200', status: 'Active',    date: '2025-05-26' },
+      { id: '#1034', name: 'Divya Rao',     amount: '₹450',   status: 'Cancelled', date: '2025-05-25' },
+    ];
+    table.pageSize = 5;
+  </script>
+</body>
+</html>
